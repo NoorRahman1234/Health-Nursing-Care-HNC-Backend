@@ -66,7 +66,7 @@ exports.registerNurse = async (req, res) => {
 };
 
 
-// Login Nurse
+// // Login Nurse
 exports.loginNurse = async (req, res) => {
   try {
     const { cnic, password } = req.body;
@@ -149,6 +149,7 @@ exports.loginNurse = async (req, res) => {
     return res.status(500).json(serverErrorResponse);
   }
 };
+
 
 // Logout Nurse
 exports.logoutNurse = async (req, res) => {

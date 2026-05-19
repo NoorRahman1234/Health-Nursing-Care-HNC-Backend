@@ -6,6 +6,7 @@ const { protect } = require('../middlewares/logoutMiddleware');
 const { registerNurse, loginNurse, logoutNurse } = require('../controllers/authController');
 
 
+
 // Route to generate OTP
 router.post('/send-otp', sendOtp);
 
@@ -13,4 +14,5 @@ router.post('/send-otp', sendOtp);
 router.post('/signup', registerNurse);
 router.post('/login', loginNurse);
 router.post('/logout', protect, logoutNurse);
+
 module.exports = router;
