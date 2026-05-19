@@ -1,16 +1,16 @@
 
 const express = require('express');
 const router = express.Router();
-const { registerNurse, sendOtp} = require('../controllers/authController');
-const { loginNurse } = require('../controllers/authController');
+const { sendOtp } = require('../controllers/otpController');
+const { protect } = require('../middlewares/logoutMiddleware');
+const { registerNurse, loginNurse, logoutNurse } = require('../controllers/authController');
+
 
 // Route to generate OTP
 router.post('/send-otp', sendOtp);
 
-// The route that will handle your combined Figma multi-step submission data
+// Routes 
 router.post('/signup', registerNurse);
-
-// login Routes 
 router.post('/login', loginNurse);
-
+router.post('/logout', protect, logoutNurse);
 module.exports = router;

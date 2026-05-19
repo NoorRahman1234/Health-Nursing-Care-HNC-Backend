@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const connectDB = require('./config/db.js');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
+// const patientRoutes = require('./routes/patientRoutes');
 
 
 // Initialize the express framework server application
@@ -24,6 +25,7 @@ app.use(express.json()); // this allow the server to accept the JSON data in the
 
 // Set up Route url paths
 app.use('/api/auth', authRoutes);
+// app.use('/api/patients', patientRoutes);
 
 
 

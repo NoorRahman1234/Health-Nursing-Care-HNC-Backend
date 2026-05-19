@@ -15,7 +15,6 @@ const nurseSchema = new mongoose.Schema({
   shiftEnd: { type: String, required: true },   // e.g., "05:00 PM"
 
   // Step 3: Security & Access
-  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, default: 'Nurse' },
   isVerified: { type: Boolean, default: false } ,// Saved for the OTP validation phase
@@ -23,3 +22,13 @@ const nurseSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model('Nurse', nurseSchema);
+
+
+
+
+
+
+
+
+
+
