@@ -1,9 +1,10 @@
 
-const express = require('express');
+// const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { sendOtp } = require('../controllers/otpController');
-const { protect } = require('../middlewares/logoutMiddleware');
-const { registerNurse, loginNurse, logoutNurse } = require('../controllers/authController');
+import { sendOtp } from '../controllers/otpController.js';
+import { protect } from '../middlewares/logoutMiddleware.js';
+import { registerNurse, loginNurse, logoutNurse, forgotPassword, resetPassword } from '../controllers/authController.js';
 
 
 
@@ -14,5 +15,8 @@ router.post('/send-otp', sendOtp);
 router.post('/signup', registerNurse);
 router.post('/login', loginNurse);
 router.post('/logout', protect, logoutNurse);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
-module.exports = router;
+// module.exports = router;
+export default router;
