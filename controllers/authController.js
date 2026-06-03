@@ -1,21 +1,14 @@
 
-// const Nurse = require('../models/modelNurse');
-// import modelNurse from '../models/modelNurse.js'; 
-// const Otp = require('../models/OtpModel'); 
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const logout = require('../models/logoutModel');
-
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import modelNurse from '../models/modelNurse.js';
 import Nurse from '../models/modelNurse.js';
-// import { OtpModel } from '../models/OtpModel.js'; 
-import OtpModel from '../models/OtpModel.js';// Must use import and .js
+import OtpModel from '../models/OtpModel.js';
 import logout from '../models/logoutModel.js'
 import Otp from '../models/OtpModel.js';
-// exports.registerNurse = async (req, res) => {
+
+
   export const registerNurse = async (req, res) => {
   try {
     const {
@@ -76,8 +69,7 @@ import Otp from '../models/OtpModel.js';
 };
 
 
-// // Login Nurse
-// exports.loginNurse = async (req, res) => {
+// Login Nurse
   export const loginNurse = async (req, res) => {
   try {
     const { cnic, password } = req.body;
@@ -162,8 +154,8 @@ import Otp from '../models/OtpModel.js';
 };
 
 
+
 // Logout Nurse
-// exports.logoutNurse = async (req, res) => {
   export  const logoutNurse = async (req, res) => {
 
   try {
@@ -197,14 +189,8 @@ import Otp from '../models/OtpModel.js';
 };
 
 
-// import { OtpModel } from '../models/OtpModel.js';
-// import modelNurse from '../models/modelNurse.js'; // Adjust the path if your model name is different
-// import bcrypt from 'bcryptjs';
-// import jwt from 'jsonwebtoken';
 
-// ==========================================
 // 1. FORGOT PASSWORD (Request OTP)
-// ==========================================
 export const forgotPassword = async (req, res) => {
     try {
         const { cnic } = req.body; // Using CNIC as the unique identifier
@@ -243,55 +229,9 @@ export const forgotPassword = async (req, res) => {
     }
 };
 
-// ==========================================
+
+
 // 2. RESET PASSWORD (Verify & Update)
-// // ==========================================
-// export const resetPassword = async (req, res) => {
-//     try {
-//         const { email, otp, newPassword } = req.body;
-
-//         if (!email || !otp || !newPassword) {
-//             return res.status(400).json({ success: false, message: "All fields (email, OTP, New Password) are required." });
-//         }
-
-//         // Step 1: Check if the OTP exists for this CNIC
-//         // const otpRecord = await OtpModel.findOne({ identifier: cnic });
-//         // This succeeds because it uses 'identifier' and 'otp' to match your schema!
-//         const record = await Otp.findOne({ identifier: email, otp: otp });
-//         if (!otp) {
-//             return res.status(400).json({ success: false, message: "OTP expired or invalid. Please request a new one." });
-//         }
-
-//         // Step 2: Verify if the user's submitted OTP matches the DB record
-//         if (otp !== otp) {
-//             return res.status(400).json({ success: false, message: "Incorrect OTP code." });
-//         }
-
-//         // Step 3: Find the user to update
-//         const user = await modelNurse.findOne({ email });
-//         if (!user) {
-//             return res.status(404).json({ success: false, message: "User not found." });
-//         }
-
-//         // Step 4: Hash the new password safely
-//         const salt = await bcrypt.genSalt(10);
-//         const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-//         // Step 5: Save new password and delete the OTP record so it can't be reused
-//         user.password = hashedPassword;
-//         await user.save();
-//         await OtpModel.deleteOne({ identifier: cnic });
-
-//         return res.status(200).json({ 
-//             success: true, 
-//             message: "Password reset successful! You can now log in with your new password." 
-//         });
-
-//     } catch (error) {
-//         return res.status(500).json({ success: false, message: "Server Error", error: error.message });
-//     }
-// };
-
 export const resetPassword = async (req, res) => {
     try {
         const { cnic, otp, newPassword } = req.body;

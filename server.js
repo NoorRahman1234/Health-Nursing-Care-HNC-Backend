@@ -4,11 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import  connectDB from './config/db.js';
 import path from 'path';
-// const authRoutes = require('./routes/authRoutes');
-// const patientRoutes = require('./routes/patientRoutes');
-//  CORRECT (No curly braces for default exports)
 import authRoutes from './routes/authRoutes.js'; 
-// import otpRoutes from './routes/otpRoutes.js';
+
 
 // Initialize the express framework server application
 const app = express();

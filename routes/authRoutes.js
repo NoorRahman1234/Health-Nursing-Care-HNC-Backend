@@ -1,5 +1,4 @@
 
-// const express = require('express');
 import express from 'express';
 const router = express.Router();
 import { sendOtp } from '../controllers/otpController.js';
@@ -8,10 +7,8 @@ import { registerNurse, loginNurse, logoutNurse, forgotPassword, resetPassword }
 
 
 
-// Route to generate OTP
-router.post('/send-otp', sendOtp);
-
 // Routes 
+router.post('/send-otp', sendOtp);
 router.post('/signup', registerNurse);
 router.post('/login', loginNurse);
 router.post('/logout', protect, logoutNurse);
