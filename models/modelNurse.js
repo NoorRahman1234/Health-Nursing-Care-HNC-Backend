@@ -18,7 +18,35 @@ const nurseSchema = new mongoose.Schema({
   // Step 3: Security & Access
   password: { type: String, required: true },
   role: { type: String, default: 'Nurse' },
-  isVerified: { type: Boolean, default: false } ,// Saved for the OTP validation phase
+  isVerified: { type: Boolean, default: false }, // Saved for the OTP validation phase
+  // Inside your nurseSchema definition
+  isOnline: {
+  type: Boolean,
+  default: false // Nurses start offline by default when they register
+},
+
+
+// Add or merge these fields inside your existing nurseSchema definition
+hourlyFee: {
+  type: Number,
+  default: 1000 // A logical default starting value
+},
+availability: {
+  from: { type: String, default: "10:00 AM" },
+  to: { type: String, default: "08:00 PM" }
+},
+hospitalName: {
+  type: String,
+  default: ""
+},
+specialization: {
+  type: String,
+  default: ""
+},
+description: {
+  type: String,
+  default: ""
+}
 
 }, { timestamps: true });
 
