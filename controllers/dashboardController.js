@@ -222,33 +222,94 @@ export const updateNurseProfile = async (req, res) => {
 // This function supplies the data for the "Upcoming Appointments" section on the Profile Screen
 export const getMyAppointments = async (req, res) => {
     try {
-        const { nurseId } = req.query;
+        // 1. Grab both nurseId and tab from query parameters
+        const { nurseId, tab } = req.query; 
 
         if (!nurseId) {
             return res.status(400).json({
                 success: false,
-                message: "Nurse ID is required to fetch upcoming appointments."
+                message: "Nurse ID is required to fetch appointments."
             });
         }
 
-        // Find appointments accepted by this nurse that are not completed yet
-        // Replace 'Appointment' with your exact appointment model variable name if different
-        const upcomingAppointments = await Appointment.find({
-            assignedNurse: nurseId,
-            status: 'Accepted'
-        }).sort({ createdAt: 1 }); // Sorts chronologically (earliest appointment first)
+        // 2. Start with the default nurse filter
+        let filter = { assignedNurse: nurseId };
+
+        // 3. Dynamically alter the filter based on the active UI tab state
+        if (tab === 'past') {
+            // Screen "Past" tab handles history records
+            filter.status = { $in: ['Completed', 'Cancelled'] };
+        } else {
+            // Default to 'upcoming' tab if no tab parameter is sent
+            filter.status = { $in: ['Pending', 'Accepted'] };
+        }
+
+        // 4. Fetch from MongoDB and sort by the actual event execution date
+        const appointments = await Appointment.find(filter).sort({ appointmentDate: 1 }); 
 
         return res.status(200).json({
             success: true,
-            count: upcomingAppointments.length,
-            data: upcomingAppointments
+            count: appointments.length,
+            data: appointments
         });
 
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: "Error fetching upcoming profile appointments.",
+            message: "Error fetching nurse profile appointments.",
             error: error.message
         });
+    }
+};
+
+
+export const cancelAppointmentByNurse = async (req, res) => {
+    try {
+        const { appointmentId, reason, details } = req.body;
+
+        if (!appointmentId || !reason) {
+            return res.status(400).json({ success: false, message: "Appointment ID and reason are required." });
+        }
+
+        // Find the target booking target record
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: "Appointment record not found." });
+        }
+
+        // Check the 1-hour cancellation rule from Screen 59
+        const appointmentTime = new Date(appointment.appointmentDate); // Ensure your schema records date/time properly
+        const currentTime = new Date();
+        const timeDifferenceInMs = appointmentTime - currentTime;
+        const timeDifferenceInHours = timeDifferenceInMs / (1000 * 60 * 60);
+
+        // If the appointment starts in less than 1 hour, block cancellation immediately
+        if (timeDifferenceInHours < 1 && timeDifferenceInHours > 0) {
+            return res.status(400).json({
+                success: false,
+                code: "CANCELLATION_BLOCKED",
+                message: "Cancellations cannot be made within an hour of your scheduled appointment."
+            });
+        }
+
+        // Apply cancellation changes
+        appointment.status = 'Cancelled';
+        appointment.cancellation = {
+            cancelledBy: 'Nurse',
+            reason: reason,
+            details: details || "",
+            cancelledAt: new Date()
+        };
+
+        await appointment.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Appointment Cancelled successfully.",
+            data: appointment
+        });
+
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
     }
 };
