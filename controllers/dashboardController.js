@@ -186,10 +186,16 @@ export const updateNurseProfile = async (req, res) => {
         // Prepare an object containing only the fields sent in the request body
         const updateFields = {};
         if (hourlyFee !== undefined) updateFields.hourlyFee = hourlyFee;
-        if (availability !== undefined) updateFields.availability = availability;
         if (hospitalName !== undefined) updateFields.hospitalName = hospitalName;
         if (specialization !== undefined) updateFields.specialization = specialization;
         if (description !== undefined) updateFields.description = description;
+
+        // ⚡ Handle the nested availability object (days, from, to) smoothly
+        if (availability !== undefined) {
+            if (availability.days !== undefined) updateFields['availability.days'] = availability.days;
+            if (availability.from !== undefined) updateFields['availability.from'] = availability.from;
+            if (availability.to !== undefined) updateFields['availability.to'] = availability.to;
+        }
 
         const updatedNurse = await modelNurse.findByIdAndUpdate(
             nurseId,
@@ -211,7 +217,6 @@ export const updateNurseProfile = async (req, res) => {
         return res.status(500).json({ success: false, error: error.message });
     }
 };
-
 
 
 // This function supplies the data for the "Upcoming Appointments" section on the Profile Screen

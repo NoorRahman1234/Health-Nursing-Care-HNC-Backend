@@ -32,6 +32,11 @@ hourlyFee: {
   default: 1000 // A logical default starting value
 },
 availability: {
+  days: { 
+    type: [String], 
+    default: ["Mon", "Tue", "Wed", "Thu", "Fri"] // Stores selected working days
+  },
+
   from: { type: String, default: "10:00 AM" },
   to: { type: String, default: "08:00 PM" }
 },
