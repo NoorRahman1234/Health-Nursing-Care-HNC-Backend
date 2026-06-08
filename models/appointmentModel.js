@@ -32,11 +32,26 @@ const appointmentSchema = new mongoose.Schema({
     ref: 'Nurse', 
     default: null 
   },
-  status: { 
-    type: String, 
-    enum: ['Pending', 'Accepted', 'Completed', 'Cancelled'], 
-    default: 'Pending' 
-  },
+  status: {
+    type: String,
+    required: true,
+    enum: ['Pending', 'Accepted', 'In-Progress', 'Cancelled', 'Completed'], 
+    default: 'Pending'
+},
+
+  appointmentDate: {
+        type: Date,
+        default: Date.now
+    },
+
+    
+    review: {
+    feeReceived: { type: Boolean, default: false },
+    rating: { type: Number, min: 1, max: 5 },
+    comments: { type: String, default: "" },
+    submittedAt: { type: Date }
+},
+
   createdAt: { 
     type: Date, 
     default: Date.now 

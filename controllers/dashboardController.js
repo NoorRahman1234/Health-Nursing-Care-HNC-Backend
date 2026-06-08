@@ -24,6 +24,44 @@ export const getNurseFeed = async (req, res) => {
 };
 
 
+// POST: Manually create a mock appointment for testing
+export const createAppointment = async (req, res) => {
+    try {
+        const { 
+            patientName, 
+            patientAge, 
+            patientGender, 
+            description, 
+            timings, 
+            proposedFee, 
+            status, 
+            assignedNurse, 
+            appointmentDate 
+        } = req.body;
+
+        const newAppointment = new Appointment({
+            patientName,
+            patientAge,
+            patientGender,
+            description,
+            timings,
+            proposedFee,
+            status: status || 'Pending',
+            assignedNurse: assignedNurse || null,
+            appointmentDate: appointmentDate || new Date() // Sets to current time if blank
+        });
+
+        await newAppointment.save();
+
+        return res.status(201).json({
+            success: true,
+            message: "appointment created successfully!",
+            data: newAppointment
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
 
 export const acceptAppointment = async (req, res) => {
     try {
@@ -309,6 +347,109 @@ export const cancelAppointmentByNurse = async (req, res) => {
             data: appointment
         });
 
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+
+
+export const getCancellationReasons = async (req, res) => {
+    try {
+        const reasons = [
+            { id: "1", text: "Family Emergency" },
+            { id: "2", text: "Appointment time is not convenient" },
+            { id: "3", text: "Pricing is too low for me" },
+            { id: "4", text: "Other" }
+        ];
+
+        return res.status(200).json({ success: true, reasons });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+// PATCH: Update appointment status (Start / Complete / Accept)
+export const updateAppointmentStatus = async (req, res) => {
+    try {
+        const { appointmentId, status } = req.body;
+
+        const validStatuses = ['Pending', 'Accepted', 'In-Progress', 'Completed'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ success: false, message: "Invalid status state value provided." });
+        }
+
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: "Appointment record not found." });
+        }
+
+        appointment.status = status;
+        await appointment.save();
+
+        return res.status(200).json({
+            success: true,
+            message: `Appointment status updated to ${status} successfully.`,
+            data: appointment
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+// 1. GET: Fetch all open pending patient requests for the "Nearby Patients" feed
+export const getAvailableJobsFeed = async (req, res) => {
+    try {
+        // Find jobs that have no nurse assigned yet and are in 'Pending' status
+        const openJobs = await Appointment.find({ 
+            status: 'Pending',
+            assignedNurse: null 
+        }).sort({ createdAt: -1 }); // Newest requests show up first
+
+        return res.status(200).json({
+            success: true,
+            count: openJobs.length,
+            data: openJobs
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+// 4. POST: Submit nurse feedback and rating after completing duty
+export const submitAppointmentReview = async (req, res) => {
+    try {
+        const { appointmentId, feeReceived, rating, comments } = req.body;
+
+        // 1. Find the appointment record
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ success: false, message: "Appointment not found." });
+        }
+
+        // 2. Verification safety check: Ensure the job is actually completed first
+        if (appointment.status !== 'Completed') {
+            return res.status(400).json({ 
+                success: false, 
+                message: "You can only submit reviews for completed appointments." 
+            });
+        }
+
+        // 3. Save the feedback dataset directly into the document
+        appointment.review = {
+            feeReceived: feeReceived, // true or false
+            rating: Number(rating),   // 1 to 5 stars
+            comments: comments || "",
+            submittedAt: new Date()
+        };
+
+        await appointment.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Review and feedback submitted successfully!",
+            data: appointment
+        });
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
     }
