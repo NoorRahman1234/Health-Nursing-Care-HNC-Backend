@@ -1,45 +1,3 @@
-// import express from 'express';
-// import mongoose from 'mongoose';
-// import cors from 'cors';
-// import dotenv from 'dotenv';
-// import  connectDB from './config/db.js';
-// import path from 'path';
-// import authRoutes from './routes/authRoutes.js'; 
-// import dashboardRoutes from './routes/dashboardRoutes.js'
-
-
-// // Initialize the express framework server application
-// const app = express();
-
-// // Load enviroment variable (.env)
-// dotenv.config();
-
-
-// // connection Mongodb Atlas
-//  connectDB();
-
-// // Middleware
-// app.use(cors()); // this allow frontend to communicate with this backend
-// app.use(express.json()); // this allow the server to accept the JSON data in the request body
-
-
-// // Set up Route url paths
-// app.use('/api/auth', authRoutes);
-// app.use('/api/dashboard', dashboardRoutes);
-
-
-
-// // Database connection
-// const PORT = process.env.PORT || 9032;
-// const MONGO_URI = process.env.MONGO_URI;
-
-//  app.listen(PORT, () => {
-//   console.log(`Server is runnig on: ${PORT}`);
-// });
-
-
-
-
 
 import express from 'express';
 import { createServer } from 'http'; // ⚡ Added for Socket.io
@@ -49,7 +7,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js'; 
 import dashboardRoutes from './routes/dashboardRoutes.js';
-
+import settingRoutes from './routes/settingRoutes.js';
 // Load environment variables (.env)
 dotenv.config();
 
@@ -92,6 +50,7 @@ io.on('connection', (socket) => {
 // Set up Route url paths
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/setting', settingRoutes);
 
 // Define PORT from env or fallback
 const PORT = process.env.PORT || 9032;
