@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const logout = require('../models/logoutModel');
 
+import logout from '../models/logoutModel.js'
+import jwt from 'jsonwebtoken';
 
 const protect = async (req, res, next) => {
   let token;
@@ -30,6 +30,6 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+export default protect;
 
 

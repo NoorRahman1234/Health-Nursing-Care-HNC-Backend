@@ -2,7 +2,7 @@
 import express from 'express';
 const router = express.Router();
 import { sendOtp } from '../controllers/otpController.js';
-import { protect } from '../middlewares/logoutMiddleware.js';
+import protect from '../middlewares/logoutMiddleware.js'; 
 import { registerNurse, loginNurse, logoutNurse, forgotPassword, resetPassword } from '../controllers/authController.js';
 
 
@@ -15,5 +15,4 @@ router.post('/logout', protect, logoutNurse);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 
-// module.exports = router;
 export default router;

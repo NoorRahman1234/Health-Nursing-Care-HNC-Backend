@@ -1,5 +1,5 @@
-// import  mongoose from 'mongoose';
-const mongoose = require ('mongoose');
+import  mongoose from 'mongoose';
+
 
 const nurseSchema = new mongoose.Schema({
   // Step 1: Personal Details
@@ -55,8 +55,8 @@ description: {
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('Nurse', nurseSchema);
-// export default Nurse;
+const Nurse = mongoose.model('Nurse', nurseSchema);
+export default Nurse; 
 
 
 
