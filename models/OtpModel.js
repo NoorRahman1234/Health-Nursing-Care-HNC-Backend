@@ -6,6 +6,12 @@ const otpSchema = new mongoose.Schema({
     type: String, 
     required: true 
   }, 
+
+  mobile: { 
+  type: String, 
+  required: true, 
+  unique: true // Ensure no two patients share the same phone number
+},
   otp: { 
     type: String, // 👈 Changed to String for safety
     required: true

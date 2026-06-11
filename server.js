@@ -10,7 +10,7 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 import settingRoutes from './routes/settingRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import { saveMessage } from './controllers/chatController.js';
-
+import authPatientRoutes from './routes/authPatientRoutes.js';
 // Load environment variables (.env)
 dotenv.config();
 
@@ -34,23 +34,6 @@ app.set('socketio', io);
 // Middleware
 app.use(cors()); // Allows frontend to communicate with backend
 app.use(express.json()); // Allows the server to accept JSON data in request bodies
-
-// // Socket.io connection logic
-// io.on('connection', (socket) => {
-//   console.log(`⚡ A user connected: ${socket.id}`);
-
-//   // When a patient logs into their app, they join their own private room
-//   socket.on('join_room', (userId) => {
-//     socket.join(userId);
-//     console.log(`👤 User joined private room: ${userId}`);
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('❌ User disconnected');
-//   });
-// });
-
-
 
 
 
@@ -129,7 +112,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/setting', settingRoutes);
 app.use('/api/chat', chatRoutes);
-
+app.use('/api/auth/patient', authPatientRoutes);
 // Define PORT from env or fallback
 const PORT = process.env.PORT || 9032;
 

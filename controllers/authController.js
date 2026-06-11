@@ -193,35 +193,35 @@ import Otp from '../models/OtpModel.js';
 // 1. FORGOT PASSWORD (Request OTP)
 export const forgotPassword = async (req, res) => {
     try {
-        const { cnic } = req.body; // Using CNIC as the unique identifier
+        const { mobile } = req.body; 
 
-        if (!cnic) {
-            return res.status(400).json({ success: false, message: "cnic  is required." });
+        if (!mobile) {
+            return res.status(400).json({ success: false, message: "mobile No  is required." });
         }
 
         // Step 1: Verify the nurse/user exists in the database
-        const user = await modelNurse.findOne({ cnic });
+        const user = await modelNurse.findOne({ mobile });
         if (!user) {
-            return res.status(404).json({ success: false, message: "No account found with this cnic." });
+            return res.status(404).json({ success: false, message: "No account found with this mobile." });
         }
 
         // Step 2: Generate a secure 6-digit random OTP
-        const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        const generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
 
         // Step 3: Save the OTP to OtpModel (updates if it exists, creates if it doesn't)
         await OtpModel.findOneAndUpdate(
-            { identifier: cnic },
+            { identifier: mobile },
             { otp: generatedOtp, createdAt: Date.now() },
             { upsert: true, new: true }
         );
 
         // Step 4: Send the OTP
-        console.log(`[TESTING] OTP for CNIC ${cnic} is: ${generatedOtp}`);
+        console.log(`[TESTING] OTP for MOBILE ${mobile} is: ${generatedOtp}`);
         // Note: When ready, integrate your SMS/Email API here to send generatedOtp to user.phone
 
         return res.status(200).json({ 
             success: true, 
-            message: "Password reset OTP sent successfully to your registered device." 
+            message: "Password reset OTP sent successfully to your registered number." 
         });
 
     } catch (error) {
@@ -234,21 +234,21 @@ export const forgotPassword = async (req, res) => {
 // 2. RESET PASSWORD (Verify & Update)
 export const resetPassword = async (req, res) => {
     try {
-        const { cnic, otp, newPassword } = req.body;
+        const { mobile, otp, newPassword } = req.body;
 
         // Check if all fields are provided
-        if (!cnic || !otp || !newPassword) {
+        if (!mobile || !otp || !newPassword) {
             return res.status(400).json({ 
                 success: false, 
-                message: "All fields (cnic, OTP, New Password) are required." 
+                message: "All fields (mobile, OTP, New Password) are required." 
             });
         }
 
         // Clean up inputs to prevent typo mismatches
-        const cleancnic = cnic.trim().toLowerCase();
+        const cleanmobile = mobile.trim().toLowerCase();
 
         // Step 1: Look for the OTP record using the 'record' variable name
-        const record = await Otp.findOne({ identifier: cleancnic, otp: String(otp).trim() });
+        const record = await Otp.findOne({ identifier: cleanmobile, otp: String(otp).trim() });
         
         // FIX 1: Check the database result (record), NOT the req.body variable (otp)
         if (!record) {
@@ -260,7 +260,7 @@ export const resetPassword = async (req, res) => {
 
         // Step 2: Find the user to update
         // FIX 2: Using the clean trimmed email to search your modelNurse collection
-        const user = await modelNurse.findOne({ cnic: cleancnic });
+        const user = await modelNurse.findOne({ mobile: cleanmobile });
         
         if (!user) {
             return res.status(404).json({ 
@@ -279,7 +279,7 @@ export const resetPassword = async (req, res) => {
         
         // Step 5: Delete the OTP record so it can't be reused safely
         // FIX 3: Replaced the broken 'cnic' variable with 'cleanEmail'
-        await Otp.deleteOne({ identifier: cleancnic });
+        await Otp.deleteOne({ identifier: cleanmobile });
 
         return res.status(200).json({ 
             success: true, 
