@@ -52,6 +52,12 @@ const appointmentSchema = new mongoose.Schema({
     submittedAt: { type: Date }
 },
 
+
+patientId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Patient"
+},
+
   createdAt: { 
     type: Date, 
     default: Date.now 

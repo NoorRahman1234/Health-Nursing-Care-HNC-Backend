@@ -11,6 +11,7 @@ import settingRoutes from './routes/settingRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import { saveMessage } from './controllers/chatController.js';
 import authPatientRoutes from './routes/authPatientRoutes.js';
+import patientAppointmentRoutes from './routes/patientAppointmentRoutes.js';
 // Load environment variables (.env)
 dotenv.config();
 
@@ -113,6 +114,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/setting', settingRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/auth/patient', authPatientRoutes);
+app.use('/api/patient-appointments', patientAppointmentRoutes);
 // Define PORT from env or fallback
 const PORT = process.env.PORT || 9032;
 
