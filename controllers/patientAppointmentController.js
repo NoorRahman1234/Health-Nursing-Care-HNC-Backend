@@ -36,29 +36,6 @@ export const getPatientAppointments = async (req, res) => {
 
 // @desc    Update appointment status when clicking 'Yes' or 'No' on confirmation modal
 // @route   PATCH /api/patient-appointments/:id/status
-// export const updateAppointmentStatus = async (req, res) => {
-//     try {
-//         const { status } = req.body; // Pass 'Confirmed' or 'Rejected'
-        
-//         const updatedStatus = await PatientAppointment.findByIdAndUpdate(
-//             req.params.id,
-//             { status },
-//             { new: true }
-//         );
-
-//         if (!updatedStatus) {
-//             return res.status(404).json({ success: false, message: 'Appointment not found' });
-//         }
-
-//         res.status(200).json({ success: true, data: updatedStatus });
-//     } catch (error) {
-//         res.status(400).json({ success: false, message: error.message });
-//     }
-// };
-
-
-// @desc    Update appointment status when clicking 'Yes' or 'No' on confirmation modal
-// @route   PATCH /api/patient-appointments/:id/status
 export const updateAppointmentStatus = async (req, res) => {
     try {
         const { status } = req.body; 
