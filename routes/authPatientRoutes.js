@@ -3,7 +3,7 @@ import {
   registerPatient, 
   loginPatient, 
   forgotPasswordPatient, 
-  resetPasswordPatient 
+  resetPasswordPatient, logoutPatient 
 } from '../controllers/authPatientController.js';
 
 const router = express.Router();
@@ -13,5 +13,5 @@ router.post('/register', registerPatient);
 router.post('/login', loginPatient);
 router.post('/forgot-password', forgotPasswordPatient);
 router.post('/reset-password', resetPasswordPatient);
-
+router.post('/logout', logoutPatient);
 export default router;

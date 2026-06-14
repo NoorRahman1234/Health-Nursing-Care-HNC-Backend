@@ -137,3 +137,39 @@ export const resetPasswordPatient = async (req, res) => {
     return res.status(500).json({ success: false, message: "Server Error", error: error.message });
   }
 };
+
+
+// logout patient
+export const logoutPatient = async (req, res) => {
+  try {
+    // 1. Extract the token from Authorization Header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(400).json({ success: false, message: "No token provided to log out." });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    // 2. Add the token to your database blacklist collection
+    const isLogout = await logout.findOne({ token });
+    if (!isLogout) {
+      await logout.create({ token });
+    }
+
+    // 3. Send successful response
+    const successResponse = {
+      success: true,
+      message: "Patient logout successful! Token blacklisted."
+    };
+
+    console.log("✅ [Postman Patient Logout Mirror]:", JSON.stringify(successResponse, null, 2));
+    return res.status(200).json(successResponse);
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error during logout process",
+      error: error.message
+    });
+  }
+};
