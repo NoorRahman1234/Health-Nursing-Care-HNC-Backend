@@ -238,7 +238,7 @@ export const updateNurseProfile = async (req, res) => {
         const updatedNurse = await modelNurse.findByIdAndUpdate(
             nurseId,
             { $set: updateFields },
-            { new: true, runValidators: true } // Return fresh updated document and respect constraints
+            { new: true, runValidators: true } 
         ).select('-password');
 
         if (!updatedNurse) {
