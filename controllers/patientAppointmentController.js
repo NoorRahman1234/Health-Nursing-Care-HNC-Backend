@@ -1,6 +1,6 @@
 import PatientAppointment from '../models/PatientAppointment.js';
 
-// @desc    Save patient details when clicking 'Done'
+
 // @route   POST /api/patient-appointments
 export const createPatientAppointment = async (req, res) => {
     try {

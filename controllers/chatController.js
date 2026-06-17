@@ -40,7 +40,7 @@ export const saveMessage = async (nurseId, patientId, senderId, senderModel, tex
     }
 };
 
-// @desc    Delete or clear an entire chat conversation thread (Swipe to Delete from video)
+
 // @route   DELETE /api/chat/thread/:roomId
 export const deleteChatThread = async (req, res) => {
     try {
