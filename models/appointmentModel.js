@@ -66,3 +66,43 @@ patientId: {
 
 const Appointment = mongoose.model('Appointment', appointmentSchema);
 export default Appointment;
+
+
+
+
+// import mongoose from 'mongoose';
+
+// const appointmentSchema = new mongoose.Schema({
+//   // The Bridge: Linking both Nurse and Patient models
+//   patientId: { 
+//     type: mongoose.Schema.Types.ObjectId, 
+//     ref: 'Patient', // Points to your Patient Model
+//     required: true 
+//   },
+//   nurseId: { 
+//     type: mongoose.Schema.Types.ObjectId, 
+//     ref: 'Nurse', // Points to your Nurse Model
+//     required: true 
+//   },
+
+//   // Appointment Data (As seen in your Figma designs)
+//   appointmentDate: { type: Date, required: true }, // e.g., 2026-07-17
+//   timing: { type: String, required: true },          // e.g., "05:30 PM - 07:30 PM"
+//   careCharges: { type: Number, required: true },
+
+//   // Status tracking for both sides
+//   status: { 
+//     type: String, 
+//     enum: ['Upcoming', 'Completed', 'Cancelled'], 
+//     default: 'Upcoming' 
+//   },
+
+//   // Cancellation Data
+//   cancellationDetails: {
+//     reason: { type: String },      
+//     customComments: { type: String } 
+//   }
+// }, { timestamps: true });
+
+// const Appointment = mongoose.model('Appointment', appointmentSchema);
+// export default Appointment;
