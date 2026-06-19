@@ -177,7 +177,7 @@ export const getSeparatedAppointments = async (req, res) => {
 };
 
 // @desc    Rebook a historical appointment
-// @route   POST /api/patient-appointments/rebook/:oldAppointmentId
+
 export const rebookAppointment = async (req, res) => {
     try {
         const { oldAppointmentId } = req.params;
