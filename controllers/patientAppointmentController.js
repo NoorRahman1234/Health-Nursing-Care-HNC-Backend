@@ -37,7 +37,7 @@ export const getPatientAppointments = async (req, res) => {
 };
 
 // @desc    Update appointment status when clicking 'Yes' or 'No' on confirmation modal
-// @route   PATCH /api/patient-appointments/:id/status
+
 export const updateAppointmentStatus = async (req, res) => {
     try {
         const { status } = req.body; 
