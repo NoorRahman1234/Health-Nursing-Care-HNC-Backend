@@ -1,7 +1,6 @@
 import { Contact, FAQ } from '../models/modelSetting.js';
 import Appointment from '../models/appointmentModel.js'; // To search transaction history
 
-// 1. POST: Submit a contact message
 export const submitContactForm = async (req, res) => {
     try {
         const { name, email, message } = req.body;
