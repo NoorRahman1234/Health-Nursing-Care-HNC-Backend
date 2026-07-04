@@ -1,5 +1,5 @@
 import { Contact, FAQ } from '../models/modelSetting.js';
-import Appointment from '../models/appointmentModel.js'; // To search transaction history
+import Appointment from '../models/appointmentModel.js'; 
 
 export const submitContactForm = async (req, res) => {
     try {
