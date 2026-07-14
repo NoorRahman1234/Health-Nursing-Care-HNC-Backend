@@ -41,7 +41,7 @@ export const getTransactionHistory = async (req, res) => {
         const history = await Appointment.find({
             assignedNurse: nurseId,
             status: { $in: ['Completed', 'Cancelled'] }
-        }).sort({ createdAt: -1 }); // Newest transactions first
+        }).sort({ createdAt: -1 }); 
 
         return res.status(200).json({
             success: true,
